@@ -274,14 +274,9 @@ mapFrame.addEventListener("click", (event) => {
     return;
   }
 
-  // Only map-surface clicks should add points.
-  const clickedOnMapSurface =
-    event.target === baseMap ||
-    event.target === trail ||
-    event.target === trailPath ||
-    trailGuide.contains(event.target);
-
-  if (!clickedOnMapSurface) {
+  const clickedInCalibrationUi = calibrationPanel.contains(event.target);
+  const clickedMediaPoint = event.target.closest(".point");
+  if (clickedInCalibrationUi || clickedMediaPoint) {
     return;
   }
 
