@@ -9,9 +9,17 @@ const pointButtonTemplate = document.getElementById("pointButtonTemplate");
 const listItemTemplate = document.getElementById("listItemTemplate");
 const closeViewerButton = document.getElementById("closeViewer");
 const toggleTrailButton = document.getElementById("toggleTrail");
+const togglePlaceModeButton = document.getElementById("togglePlaceMode");
 const trail = document.getElementById("trail");
 const trailPath = document.getElementById("trailPath");
-const trailGuide = document.getElementById("trailGuide");
+const mapFrame = document.getElementById("mapFrame");
+const baseMap = document.getElementById("baseMap");
+const placementPanel = document.getElementById("placementPanel");
+const placementSelect = document.getElementById("placementSelect");
+const copyPlacementDataButton = document.getElementById("copyPlacementData");
+const donePlacementButton = document.getElementById("donePlacement");
+
+const placeModeEnabledByQuery = new URLSearchParams(window.location.search).get("place") === "1";
 
 const defaultTrailPoints = [
   [0.26, 58.1],
@@ -44,6 +52,8 @@ const defaultTrailPoints = [
 
 let trailPoints = [...defaultTrailPoints];
 let activeId = null;
+let mediaPoints = [];
+let isPlaceModeActive = false;
 
 function formatType(type) {
   return type === "video" ? "Video" : "Photo";
@@ -51,6 +61,10 @@ function formatType(type) {
 
 function rounded(value) {
   return Number(value.toFixed(2));
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
 function pointsToPath(points) {
@@ -83,7 +97,6 @@ function pointsToPath(points) {
 
 function renderTrail() {
   trailPath.setAttribute("d", pointsToPath(trailPoints));
-  trailGuide.replaceChildren();
 }
 
 function clearActive() {
@@ -111,6 +124,9 @@ function openViewer(point) {
     mediaNode.src = point.src;
     mediaNode.controls = true;
     mediaNode.preload = "metadata";
+    if (point.poster) {
+      mediaNode.poster = point.poster;
+    }
   } else {
     mediaNode = document.createElement("img");
     mediaNode.src = point.src;
@@ -130,30 +146,104 @@ function openViewer(point) {
   }
 }
 
-function renderPoint(point) {
-  const button = pointButtonTemplate.content.firstElementChild.cloneNode(true);
-  button.dataset.id = point.id;
-  button.style.left = `${point.x}%`;
-  button.style.top = `${point.y}%`;
-  button.querySelector(".point-label").textContent = point.shortLabel;
-  button.addEventListener("click", () => openViewer(point));
-  pointLayer.appendChild(button);
+function renderPoints() {
+  pointLayer.replaceChildren();
+  pointList.replaceChildren();
 
-  const listItem = listItemTemplate.content.firstElementChild.cloneNode(true);
-  listItem.querySelector(".stop-title").textContent = point.title;
-  listItem.querySelector(".stop-meta").textContent = `${point.date} • ${formatType(point.type)}`;
-  listItem.addEventListener("click", () => {
-    openViewer(point);
-    button.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+  mediaPoints.forEach((point) => {
+    const button = pointButtonTemplate.content.firstElementChild.cloneNode(true);
+    button.dataset.id = point.id;
+    button.style.left = `${point.x}%`;
+    button.style.top = `${point.y}%`;
+    button.querySelector(".point-label").textContent = point.shortLabel;
+    button.addEventListener("click", () => {
+      if (!isPlaceModeActive) {
+        openViewer(point);
+      }
+    });
+    if (isPlaceModeActive && placementSelect.value === point.id) {
+      button.classList.add("placement-active");
+    }
+    pointLayer.appendChild(button);
+
+    const listItem = listItemTemplate.content.firstElementChild.cloneNode(true);
+    listItem.querySelector(".stop-title").textContent = point.title;
+    listItem.querySelector(".stop-meta").textContent = `${point.date} • ${formatType(point.type)} • x:${point.x} y:${point.y}`;
+    listItem.addEventListener("click", () => {
+      openViewer(point);
+      button.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    });
+    pointList.appendChild(listItem);
   });
-  pointList.appendChild(listItem);
+}
+
+function renderPlacementOptions() {
+  placementSelect.replaceChildren();
+  mediaPoints.forEach((point) => {
+    const option = document.createElement("option");
+    option.value = point.id;
+    option.textContent = `${point.title} (${point.src.split("/").pop()})`;
+    placementSelect.appendChild(option);
+  });
+}
+
+function setPlaceMode(active) {
+  isPlaceModeActive = active;
+  placementPanel.hidden = !active;
+  mapFrame.classList.toggle("placing", active);
+  togglePlaceModeButton.textContent = active ? "Placing..." : "Place Media";
+  togglePlaceModeButton.setAttribute("aria-pressed", String(active));
+  renderPoints();
+}
+
+function selectedPoint() {
+  const targetId = placementSelect.value;
+  return mediaPoints.find((point) => point.id === targetId) || null;
+}
+
+function placeSelectedPoint(event) {
+  const point = selectedPoint();
+  if (!point) {
+    return;
+  }
+
+  const rect = baseMap.getBoundingClientRect();
+  const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100);
+  const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100);
+  point.x = rounded(x);
+  point.y = rounded(y);
+  renderPoints();
+}
+
+async function copyPlacementData() {
+  const payload = mediaPoints.map((point) => ({
+    id: point.id,
+    src: point.src,
+    x: point.x,
+    y: point.y
+  }));
+  try {
+    await navigator.clipboard.writeText(JSON.stringify(payload));
+    copyPlacementDataButton.textContent = "Copied";
+  } catch {
+    copyPlacementDataButton.textContent = "Copy Failed";
+  }
+  setTimeout(() => {
+    copyPlacementDataButton.textContent = "Copy Placement JSON";
+  }, 1100);
 }
 
 async function init() {
   renderTrail();
+
+  if (placeModeEnabledByQuery) {
+    togglePlaceModeButton.hidden = false;
+  }
+
   const response = await fetch("data/media.json");
-  const points = await response.json();
-  points.forEach(renderPoint);
+  mediaPoints = await response.json();
+  renderPlacementOptions();
+  renderPoints();
 }
 
 closeViewerButton.addEventListener("click", () => {
@@ -174,6 +264,34 @@ toggleTrailButton.addEventListener("click", () => {
   const nowHidden = !isHidden;
   toggleTrailButton.setAttribute("aria-pressed", String(!nowHidden));
   toggleTrailButton.textContent = nowHidden ? "Show Trail" : "Hide Trail";
+});
+
+togglePlaceModeButton.addEventListener("click", () => {
+  setPlaceMode(!isPlaceModeActive);
+});
+
+donePlacementButton.addEventListener("click", () => {
+  setPlaceMode(false);
+});
+
+placementSelect.addEventListener("change", () => {
+  renderPoints();
+});
+
+copyPlacementDataButton.addEventListener("click", copyPlacementData);
+
+mapFrame.addEventListener("click", (event) => {
+  if (!isPlaceModeActive) {
+    return;
+  }
+
+  if (placementPanel.contains(event.target)) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+  placeSelectedPoint(event);
 });
 
 viewer.addEventListener("click", (event) => {

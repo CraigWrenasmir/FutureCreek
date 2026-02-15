@@ -19,6 +19,7 @@
       <h1>Styx Creek</h1>
     </div>
     <div class="topbar-actions">
+      <button id="togglePlaceMode" class="trail-btn" type="button" hidden>Place Media</button>
       <button id="toggleTrail" class="trail-btn" type="button" aria-pressed="true">Hide Trail</button>
     </div>
   </header>
@@ -32,6 +33,16 @@
           <g id="trailGuide"></g>
         </svg>
         <div id="pointLayer" class="point-layer" aria-label="Map media locations"></div>
+        <section id="placementPanel" class="placement-panel" hidden>
+          <p class="placement-title">Placement Mode</p>
+          <p class="placement-copy">Choose an item, then click the map to set coordinates.</p>
+          <label class="placement-label" for="placementSelect">Media Item</label>
+          <select id="placementSelect"></select>
+          <div class="placement-actions">
+            <button id="copyPlacementData" type="button">Copy Placement JSON</button>
+            <button id="donePlacement" type="button">Done</button>
+          </div>
+        </section>
       </div>
     </section>
 
