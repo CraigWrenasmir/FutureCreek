@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FutureCreek | Styx Creek Field Map</title>
+  <meta name="description" content="Explore Styx Creek through an interactive hand-drawn map and field media." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">FutureCreek Archive</p>
+      <h1>Styx Creek</h1>
+    </div>
+    <button id="toggleTrail" class="trail-btn" type="button" aria-pressed="true">Show Trail</button>
+  </header>
+
+  <main class="layout">
+    <section class="map-panel" aria-label="Interactive map">
+      <div class="map-frame" id="mapFrame">
+        <img id="baseMap" src="assets/Map.jpg" alt="Hand-drawn map of Styx Creek" />
+        <svg class="trail" id="trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M8,75 C18,60 35,63 43,70 C50,75 61,68 70,54 C81,37 90,18 98,16" />
+        </svg>
+        <div id="pointLayer" class="point-layer" aria-label="Map media locations"></div>
+      </div>
+    </section>
+
+    <aside class="rail" aria-label="Media locations">
+      <h2>Explore Points</h2>
+      <p class="rail-copy">Click points on the map or select a stop below.</p>
+      <div id="pointList" class="point-list"></div>
+    </aside>
+  </main>
+
+  <dialog id="viewer" class="viewer">
+    <button id="closeViewer" class="close-btn" type="button" aria-label="Close viewer">Close</button>
+    <div class="viewer-media" id="viewerMedia"></div>
+    <div class="viewer-meta">
+      <h3 id="viewerTitle"></h3>
+      <p id="viewerCaption"></p>
+      <p id="viewerDate" class="viewer-date"></p>
+    </div>
+  </dialog>
+
+  <template id="pointButtonTemplate">
+    <button class="point" type="button">
+      <span class="point-dot"></span>
+      <span class="point-label"></span>
+    </button>
+  </template>
+
+  <template id="listItemTemplate">
+    <button class="stop-card" type="button">
+      <span class="stop-title"></span>
+      <span class="stop-meta"></span>
+    </button>
+  </template>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
