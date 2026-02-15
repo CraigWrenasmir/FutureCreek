@@ -18,7 +18,10 @@
       <p class="eyebrow">FutureCreek Archive</p>
       <h1>Styx Creek</h1>
     </div>
-    <button id="toggleTrail" class="trail-btn" type="button" aria-pressed="true">Show Trail</button>
+    <div class="topbar-actions">
+      <button id="calibrateTrail" class="trail-btn" type="button" aria-pressed="false">Calibrate Trail</button>
+      <button id="toggleTrail" class="trail-btn" type="button" aria-pressed="true">Hide Trail</button>
+    </div>
   </header>
 
   <main class="layout">
@@ -26,9 +29,19 @@
       <div class="map-frame" id="mapFrame">
         <img id="baseMap" src="assets/Map.jpg" alt="Hand-drawn map of Styx Creek" />
         <svg class="trail" id="trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M8,75 C18,60 35,63 43,70 C50,75 61,68 70,54 C81,37 90,18 98,16" />
+          <path id="trailPath" d="" />
+          <g id="trailGuide"></g>
         </svg>
         <div id="pointLayer" class="point-layer" aria-label="Map media locations"></div>
+        <div id="calibrationPanel" class="calibration-panel" hidden>
+          <p>Click on the dark Styx Creek line to add points.</p>
+          <div class="calibration-actions">
+            <button id="undoTrailPoint" type="button">Undo</button>
+            <button id="clearTrailPoints" type="button">Clear</button>
+            <button id="copyTrailData" type="button">Copy Path Data</button>
+            <button id="doneCalibrating" type="button">Done</button>
+          </div>
+        </div>
       </div>
     </section>
 
