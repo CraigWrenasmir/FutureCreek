@@ -5,6 +5,8 @@ const viewerMedia = document.getElementById("viewerMedia");
 const viewerTitle = document.getElementById("viewerTitle");
 const viewerCaption = document.getElementById("viewerCaption");
 const viewerDate = document.getElementById("viewerDate");
+const acknowledgementModal = document.getElementById("acknowledgementModal");
+const acknowledgementButton = document.getElementById("acknowledgementButton");
 const viewerPrevButton = document.getElementById("viewerPrev");
 const viewerNextButton = document.getElementById("viewerNext");
 const pointButtonTemplate = document.getElementById("pointButtonTemplate");
@@ -21,6 +23,7 @@ const copyPlacementDataButton = document.getElementById("copyPlacementData");
 const donePlacementButton = document.getElementById("donePlacement");
 
 const placeModeEnabledByQuery = new URLSearchParams(window.location.search).get("place") === "1";
+const ACK_KEY = "futurecreek_acknowledgement_seen_v1";
 
 const defaultTrailPoints = [
   [0.26, 58.1],
@@ -323,6 +326,22 @@ function closeViewer() {
   }
 }
 
+function showAcknowledgementIfNeeded() {
+  try {
+    if (localStorage.getItem(ACK_KEY) === "true") {
+      return;
+    }
+  } catch {
+    // Continue and show modal if storage is unavailable.
+  }
+
+  if (typeof acknowledgementModal.showModal === "function") {
+    acknowledgementModal.showModal();
+  } else {
+    acknowledgementModal.setAttribute("open", "open");
+  }
+}
+
 async function init() {
   renderTrail();
 
@@ -334,6 +353,7 @@ async function init() {
   mediaPoints = await response.json();
   renderPlacementOptions();
   renderPoints();
+  showAcknowledgementIfNeeded();
 }
 
 closeViewerButton.addEventListener("click", closeViewer);
@@ -359,6 +379,20 @@ placementSelect.addEventListener("change", () => {
 });
 
 copyPlacementDataButton.addEventListener("click", copyPlacementData);
+
+acknowledgementButton.addEventListener("click", () => {
+  try {
+    localStorage.setItem(ACK_KEY, "true");
+  } catch {
+    // Ignore storage failures and still close.
+  }
+
+  if (typeof acknowledgementModal.close === "function") {
+    acknowledgementModal.close();
+  } else {
+    acknowledgementModal.removeAttribute("open");
+  }
+});
 
 mapFrame.addEventListener("click", (event) => {
   if (!isPlaceModeActive) {

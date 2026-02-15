@@ -402,6 +402,48 @@ h1 {
   opacity: 0.72;
 }
 
+.acknowledgement-modal {
+  width: min(760px, 92vw);
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.acknowledgement-modal::backdrop {
+  background: rgba(8, 10, 11, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.acknowledgement-card {
+  background: #fffef8;
+  color: #1d1a15;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+  padding: 1.05rem 1.2rem 1rem;
+}
+
+.acknowledgement-card h2 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.acknowledgement-card p {
+  margin: 0.7rem 0 0;
+  line-height: 1.5;
+  font-size: 0.93rem;
+}
+
+#acknowledgementButton {
+  margin-top: 0.9rem;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  padding: 0.45rem 0.86rem;
+  cursor: pointer;
+}
+
 .placement-panel {
   position: absolute;
   left: 0.75rem;
