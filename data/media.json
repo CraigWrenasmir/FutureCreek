@@ -1,16 +1,5 @@
 [
   {
-    "id": "media-01",
-    "title": "Crossing",
-    "shortLabel": "Crossing",
-    "type": "image",
-    "src": "assets/media/IMG_1326.jpeg",
-    "x": 29.11,
-    "y": 63.74,
-    "date": "15/02/26",
-    "caption": "Crossing"
-  },
-  {
     "id": "media-02",
     "title": "Canopy",
     "shortLabel": "Canopy",
@@ -38,8 +27,8 @@
     "shortLabel": "Junction",
     "type": "image",
     "src": "assets/media/IMG_1347.jpeg",
-    "x": 20.8,
-    "y": 66.32,
+    "x": 25.61,
+    "y": 65.83,
     "date": "15/02/26",
     "caption": "Junction"
   },
