@@ -54,6 +54,8 @@
   </main>
 
   <dialog id="viewer" class="viewer">
+    <button id="viewerPrev" class="viewer-nav viewer-prev" type="button" aria-label="Previous media">Prev</button>
+    <button id="viewerNext" class="viewer-nav viewer-next" type="button" aria-label="Next media">Next</button>
     <button id="closeViewer" class="close-btn" type="button" aria-label="Close viewer">Close</button>
     <div class="viewer-media" id="viewerMedia"></div>
     <div class="viewer-meta">
@@ -64,9 +66,16 @@
   </dialog>
 
   <template id="pointButtonTemplate">
-    <button class="point" type="button">
-      <span class="point-dot"></span>
-      <span class="point-label"></span>
+    <button class="point point-card" type="button">
+      <span class="pin-stem" aria-hidden="true"></span>
+      <span class="pin-body">
+        <span class="pin-media"></span>
+        <span class="pin-meta">
+          <span class="point-label"></span>
+          <span class="pin-type"></span>
+        </span>
+        <span class="pin-play-badge" aria-hidden="true">Play</span>
+      </span>
     </button>
   </template>
 

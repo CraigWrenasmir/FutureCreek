@@ -5,6 +5,8 @@ const viewerMedia = document.getElementById("viewerMedia");
 const viewerTitle = document.getElementById("viewerTitle");
 const viewerCaption = document.getElementById("viewerCaption");
 const viewerDate = document.getElementById("viewerDate");
+const viewerPrevButton = document.getElementById("viewerPrev");
+const viewerNextButton = document.getElementById("viewerNext");
 const pointButtonTemplate = document.getElementById("pointButtonTemplate");
 const listItemTemplate = document.getElementById("listItemTemplate");
 const closeViewerButton = document.getElementById("closeViewer");
@@ -52,8 +54,13 @@ const defaultTrailPoints = [
 
 let trailPoints = [...defaultTrailPoints];
 let activeId = null;
+let activeIndex = -1;
 let mediaPoints = [];
 let isPlaceModeActive = false;
+
+const creekGlow = document.createElement("div");
+creekGlow.className = "creek-glow";
+pointLayer.appendChild(creekGlow);
 
 function formatType(type) {
   return type === "video" ? "Video" : "Photo";
@@ -65,6 +72,11 @@ function rounded(value) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function deterministicTilt(id) {
+  const hash = Array.from(id).reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+  return ((hash % 11) - 5) * 0.9;
 }
 
 function pointsToPath(points) {
@@ -114,8 +126,33 @@ function setActive(id) {
   }
 }
 
-function openViewer(point) {
+function showCreekGlow(point) {
+  creekGlow.style.left = `${point.x}%`;
+  creekGlow.style.top = `${point.y}%`;
+  creekGlow.style.opacity = "1";
+}
+
+function hideCreekGlow() {
+  creekGlow.style.opacity = "0";
+}
+
+function stopPreviewVideo(button) {
+  const previewVideo = button.querySelector(".pin-media video");
+  if (previewVideo) {
+    previewVideo.pause();
+    previewVideo.currentTime = 0;
+  }
+}
+
+function openViewerByIndex(index) {
+  if (!mediaPoints.length) {
+    return;
+  }
+  const safeIndex = (index + mediaPoints.length) % mediaPoints.length;
+  activeIndex = safeIndex;
+  const point = mediaPoints[safeIndex];
   setActive(point.id);
+
   viewerMedia.replaceChildren();
 
   let mediaNode;
@@ -124,6 +161,7 @@ function openViewer(point) {
     mediaNode.src = point.src;
     mediaNode.controls = true;
     mediaNode.preload = "metadata";
+    mediaNode.playsInline = true;
     if (point.poster) {
       mediaNode.poster = point.poster;
     }
@@ -140,27 +178,66 @@ function openViewer(point) {
   viewerDate.textContent = `${point.date} • ${formatType(point.type)}`;
 
   if (typeof viewer.showModal === "function") {
-    viewer.showModal();
+    if (!viewer.open) {
+      viewer.showModal();
+    }
   } else {
     viewer.setAttribute("open", "open");
   }
 }
 
 function renderPoints() {
-  pointLayer.replaceChildren();
+  pointLayer.replaceChildren(creekGlow);
   pointList.replaceChildren();
 
-  mediaPoints.forEach((point) => {
+  mediaPoints.forEach((point, index) => {
     const button = pointButtonTemplate.content.firstElementChild.cloneNode(true);
     button.dataset.id = point.id;
     button.style.left = `${point.x}%`;
     button.style.top = `${point.y}%`;
+    button.style.setProperty("--tilt", `${deterministicTilt(point.id)}deg`);
     button.querySelector(".point-label").textContent = point.shortLabel;
+    button.querySelector(".pin-type").textContent = point.type === "video" ? "Video" : "Photo";
+
+    const mediaHost = button.querySelector(".pin-media");
+    if (point.type === "video") {
+      button.classList.add("video");
+      const preview = document.createElement("video");
+      preview.src = point.src;
+      preview.muted = true;
+      preview.loop = true;
+      preview.playsInline = true;
+      preview.preload = "metadata";
+      if (point.poster) {
+        preview.poster = point.poster;
+      }
+      mediaHost.appendChild(preview);
+
+      button.addEventListener("pointerenter", () => {
+        if (!isPlaceModeActive) {
+          preview.play().catch(() => {});
+        }
+      });
+      button.addEventListener("pointerleave", () => {
+        stopPreviewVideo(button);
+      });
+    } else {
+      const img = document.createElement("img");
+      img.src = point.src;
+      img.alt = point.title;
+      img.loading = "lazy";
+      mediaHost.appendChild(img);
+    }
+
+    button.addEventListener("pointerenter", () => showCreekGlow(point));
+    button.addEventListener("pointerleave", hideCreekGlow);
+
     button.addEventListener("click", () => {
       if (!isPlaceModeActive) {
-        openViewer(point);
+        openViewerByIndex(index);
       }
     });
+
     if (isPlaceModeActive && placementSelect.value === point.id) {
       button.classList.add("placement-active");
     }
@@ -170,7 +247,9 @@ function renderPoints() {
     listItem.querySelector(".stop-title").textContent = point.title;
     listItem.querySelector(".stop-meta").textContent = `${point.date} • ${formatType(point.type)} • x:${point.x} y:${point.y}`;
     listItem.addEventListener("click", () => {
-      openViewer(point);
+      if (!isPlaceModeActive) {
+        openViewerByIndex(index);
+      }
       button.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
     });
     pointList.appendChild(listItem);
@@ -233,6 +312,19 @@ async function copyPlacementData() {
   }, 1100);
 }
 
+function closeViewer() {
+  const media = viewerMedia.querySelector("video");
+  if (media) {
+    media.pause();
+  }
+
+  if (typeof viewer.close === "function") {
+    viewer.close();
+  } else {
+    viewer.removeAttribute("open");
+  }
+}
+
 async function init() {
   renderTrail();
 
@@ -246,12 +338,14 @@ async function init() {
   renderPoints();
 }
 
-closeViewerButton.addEventListener("click", () => {
-  if (typeof viewer.close === "function") {
-    viewer.close();
-  } else {
-    viewer.removeAttribute("open");
-  }
+closeViewerButton.addEventListener("click", closeViewer);
+
+viewerPrevButton.addEventListener("click", () => {
+  openViewerByIndex(activeIndex - 1);
+});
+
+viewerNextButton.addEventListener("click", () => {
+  openViewerByIndex(activeIndex + 1);
 });
 
 toggleTrailButton.addEventListener("click", () => {
@@ -301,8 +395,26 @@ viewer.addEventListener("click", (event) => {
     event.clientX > rect.right ||
     event.clientY < rect.top ||
     event.clientY > rect.bottom;
-  if (clickedOutside && typeof viewer.close === "function") {
-    viewer.close();
+  if (clickedOutside) {
+    closeViewer();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (!viewer.open) {
+    return;
+  }
+
+  if (event.key === "ArrowLeft") {
+    openViewerByIndex(activeIndex - 1);
+  }
+
+  if (event.key === "ArrowRight") {
+    openViewerByIndex(activeIndex + 1);
+  }
+
+  if (event.key === "Escape") {
+    closeViewer();
   }
 });
 
