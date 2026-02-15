@@ -9,17 +9,9 @@ const pointButtonTemplate = document.getElementById("pointButtonTemplate");
 const listItemTemplate = document.getElementById("listItemTemplate");
 const closeViewerButton = document.getElementById("closeViewer");
 const toggleTrailButton = document.getElementById("toggleTrail");
-const calibrateTrailButton = document.getElementById("calibrateTrail");
 const trail = document.getElementById("trail");
 const trailPath = document.getElementById("trailPath");
 const trailGuide = document.getElementById("trailGuide");
-const mapFrame = document.getElementById("mapFrame");
-const baseMap = document.getElementById("baseMap");
-const calibrationPanel = document.getElementById("calibrationPanel");
-const undoTrailPointButton = document.getElementById("undoTrailPoint");
-const clearTrailPointsButton = document.getElementById("clearTrailPoints");
-const copyTrailDataButton = document.getElementById("copyTrailData");
-const doneCalibratingButton = document.getElementById("doneCalibrating");
 
 const defaultTrailPoints = [
   [0.26, 58.1],
@@ -50,36 +42,11 @@ const defaultTrailPoints = [
   [99.83, 25.12]
 ];
 
-let trailPoints = loadTrailPoints();
-let isCalibratingTrail = false;
+let trailPoints = [...defaultTrailPoints];
 let activeId = null;
-
-function loadTrailPoints() {
-  try {
-    const stored = localStorage.getItem("futurecreek_trail_points");
-    if (!stored) {
-      return [...defaultTrailPoints];
-    }
-    const parsed = JSON.parse(stored);
-    if (!Array.isArray(parsed) || parsed.length < 2) {
-      return [...defaultTrailPoints];
-    }
-    return parsed;
-  } catch {
-    return [...defaultTrailPoints];
-  }
-}
-
-function saveTrailPoints() {
-  localStorage.setItem("futurecreek_trail_points", JSON.stringify(trailPoints));
-}
 
 function formatType(type) {
   return type === "video" ? "Video" : "Photo";
-}
-
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value));
 }
 
 function rounded(value) {
@@ -117,19 +84,6 @@ function pointsToPath(points) {
 function renderTrail() {
   trailPath.setAttribute("d", pointsToPath(trailPoints));
   trailGuide.replaceChildren();
-
-  if (!isCalibratingTrail) {
-    return;
-  }
-
-  trailPoints.forEach(([x, y]) => {
-    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    dot.setAttribute("cx", x);
-    dot.setAttribute("cy", y);
-    dot.setAttribute("r", "0.55");
-    dot.setAttribute("class", "trail-guide-dot");
-    trailGuide.appendChild(dot);
-  });
 }
 
 function clearActive() {
@@ -195,39 +149,6 @@ function renderPoint(point) {
   pointList.appendChild(listItem);
 }
 
-function toggleCalibration(enabled) {
-  isCalibratingTrail = enabled;
-  calibrateTrailButton.setAttribute("aria-pressed", String(enabled));
-  calibrateTrailButton.textContent = enabled ? "Calibrating..." : "Calibrate Trail";
-  calibrationPanel.hidden = !enabled;
-  renderTrail();
-}
-
-function addTrailPointFromEvent(event) {
-  const rect = baseMap.getBoundingClientRect();
-  const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100);
-  const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100);
-  trailPoints.push([rounded(x), rounded(y)]);
-  saveTrailPoints();
-  renderTrail();
-}
-
-async function copyTrailData() {
-  const json = JSON.stringify(trailPoints);
-  try {
-    await navigator.clipboard.writeText(json);
-    copyTrailDataButton.textContent = "Copied";
-    setTimeout(() => {
-      copyTrailDataButton.textContent = "Copy Path Data";
-    }, 1100);
-  } catch {
-    copyTrailDataButton.textContent = "Copy Failed";
-    setTimeout(() => {
-      copyTrailDataButton.textContent = "Copy Path Data";
-    }, 1100);
-  }
-}
-
 async function init() {
   renderTrail();
   const response = await fetch("data/media.json");
@@ -253,47 +174,6 @@ toggleTrailButton.addEventListener("click", () => {
   const nowHidden = !isHidden;
   toggleTrailButton.setAttribute("aria-pressed", String(!nowHidden));
   toggleTrailButton.textContent = nowHidden ? "Show Trail" : "Hide Trail";
-});
-
-calibrateTrailButton.addEventListener("click", () => {
-  toggleCalibration(!isCalibratingTrail);
-});
-
-doneCalibratingButton.addEventListener("click", () => {
-  toggleCalibration(false);
-});
-
-undoTrailPointButton.addEventListener("click", () => {
-  if (!trailPoints.length) {
-    return;
-  }
-  trailPoints.pop();
-  saveTrailPoints();
-  renderTrail();
-});
-
-clearTrailPointsButton.addEventListener("click", () => {
-  trailPoints = [];
-  saveTrailPoints();
-  renderTrail();
-});
-
-copyTrailDataButton.addEventListener("click", copyTrailData);
-
-mapFrame.addEventListener("click", (event) => {
-  if (!isCalibratingTrail) {
-    return;
-  }
-
-  const clickedInCalibrationUi = calibrationPanel.contains(event.target);
-  const clickedMediaPoint = event.target.closest(".point");
-  if (clickedInCalibrationUi || clickedMediaPoint) {
-    return;
-  }
-
-  event.preventDefault();
-  event.stopPropagation();
-  addTrailPointFromEvent(event);
 });
 
 viewer.addEventListener("click", (event) => {
