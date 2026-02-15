@@ -1,134 +1,134 @@
 [
   {
     "id": "media-01",
-    "title": "IMG 1326",
-    "shortLabel": "01",
+    "title": "Crossing",
+    "shortLabel": "Crossing",
     "type": "image",
     "src": "assets/media/IMG_1326.jpeg",
     "x": 29.11,
     "y": 63.74,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1326.jpeg."
+    "date": "15/02/26",
+    "caption": "Crossing"
   },
   {
     "id": "media-02",
-    "title": "IMG 1330",
-    "shortLabel": "02",
+    "title": "Canopy",
+    "shortLabel": "Canopy",
     "type": "image",
     "src": "assets/media/IMG_1330.jpeg",
     "x": 77.01,
     "y": 49.64,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1330.jpeg."
+    "date": "15/02/26",
+    "caption": "Canopy"
   },
   {
     "id": "media-03",
-    "title": "IMG 1338",
-    "shortLabel": "03",
+    "title": "Fractals",
+    "shortLabel": "Fractals",
     "type": "image",
     "src": "assets/media/IMG_1338.jpeg",
     "x": 62.24,
     "y": 69.99,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1338.jpeg."
+    "date": "15/02/26",
+    "caption": "Fractals"
   },
   {
     "id": "media-05",
-    "title": "IMG 1347",
-    "shortLabel": "05",
+    "title": "Junction",
+    "shortLabel": "Junction",
     "type": "image",
     "src": "assets/media/IMG_1347.jpeg",
     "x": 20.8,
     "y": 66.32,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1347.jpeg."
+    "date": "15/02/26",
+    "caption": "Junction"
   },
   {
     "id": "media-07",
-    "title": "IMG 1370",
-    "shortLabel": "07",
+    "title": "Camera",
+    "shortLabel": "Camera",
     "type": "video",
     "src": "assets/media/IMG_1370.mp4",
     "x": 31.91,
     "y": 76.86,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1370.mp4."
+    "date": "15/02/26",
+    "caption": "Camera"
   },
   {
     "id": "media-08",
-    "title": "IMG 2966",
-    "shortLabel": "08",
+    "title": "Betwixt",
+    "shortLabel": "Betwixt",
     "type": "image",
     "src": "assets/media/IMG_2966.jpeg",
     "x": 17.22,
     "y": 75.88,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2966.jpeg."
+    "date": "02/08/25",
+    "caption": "Betwixt"
   },
   {
     "id": "media-10",
-    "title": "IMG 2972",
-    "shortLabel": "10",
+    "title": "Divide",
+    "shortLabel": "Divide",
     "type": "image",
     "src": "assets/media/IMG_2972.jpeg",
     "x": 87.5,
     "y": 32.23,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2972.jpeg."
+    "date": "02/08/25",
+    "caption": "Divide"
   },
   {
     "id": "media-11",
-    "title": "IMG 2983",
-    "shortLabel": "11",
+    "title": "Ripples",
+    "shortLabel": "Ripples",
     "type": "video",
     "src": "assets/media/IMG_2983.mp4",
     "x": 81.03,
     "y": 38.61,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2983.mp4."
+    "date": "02/08/25",
+    "caption": "Ripples"
   },
   {
     "id": "media-12",
-    "title": "IMG 2984",
-    "shortLabel": "12",
+    "title": "Fence",
+    "shortLabel": "Fence",
     "type": "image",
     "src": "assets/media/IMG_2984.jpeg",
     "x": 65.82,
     "y": 45.96,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2984.jpeg."
+    "date": "02/08/25",
+    "caption": "Fence"
   },
   {
     "id": "media-13",
-    "title": "IMG 2986",
-    "shortLabel": "13",
+    "title": "Flow",
+    "shortLabel": "Flow",
     "type": "video",
     "src": "assets/media/IMG_2986.mp4",
     "x": 54.02,
     "y": 51.11,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2986.mp4."
+    "date": "02/08/25",
+    "caption": "Flow"
   },
   {
     "id": "media-14",
-    "title": "IMG 2987",
-    "shortLabel": "14",
+    "title": "Trajectory",
+    "shortLabel": "Trajectory",
     "type": "video",
     "src": "assets/media/IMG_2987.mp4",
     "x": 41.87,
     "y": 59.08,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2987.mp4."
+    "date": "02/08/25",
+    "caption": "Trajectory"
   },
   {
     "id": "media-15",
-    "title": "IMG 2990",
-    "shortLabel": "15",
+    "title": "Abundance",
+    "shortLabel": "Abundance",
     "type": "image",
     "src": "assets/media/IMG_2990.jpeg",
     "x": 14.77,
     "y": 63.5,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2990.jpeg."
+    "date": "02/08/25",
+    "caption": "Abundance"
   }
 ]
