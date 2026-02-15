@@ -5,8 +5,8 @@
     "shortLabel": "01",
     "type": "image",
     "src": "assets/media/IMG_1326.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 27.97,
+    "y": 75.14,
     "date": "Add date",
     "caption": "Add caption for IMG_1326.jpeg."
   },
@@ -16,8 +16,8 @@
     "shortLabel": "02",
     "type": "image",
     "src": "assets/media/IMG_1330.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 77.01,
+    "y": 49.64,
     "date": "Add date",
     "caption": "Add caption for IMG_1330.jpeg."
   },
@@ -27,21 +27,10 @@
     "shortLabel": "03",
     "type": "image",
     "src": "assets/media/IMG_1338.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 66,
+    "y": 60.55,
     "date": "Add date",
     "caption": "Add caption for IMG_1338.jpeg."
-  },
-  {
-    "id": "media-04",
-    "title": "IMG 1344",
-    "shortLabel": "04",
-    "type": "image",
-    "src": "assets/media/IMG_1344.jpeg",
-    "x": 50,
-    "y": 50,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1344.jpeg."
   },
   {
     "id": "media-05",
@@ -49,21 +38,10 @@
     "shortLabel": "05",
     "type": "image",
     "src": "assets/media/IMG_1347.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 23.95,
+    "y": 73.67,
     "date": "Add date",
     "caption": "Add caption for IMG_1347.jpeg."
-  },
-  {
-    "id": "media-06",
-    "title": "IMG 1361",
-    "shortLabel": "06",
-    "type": "image",
-    "src": "assets/media/IMG_1361.jpeg",
-    "x": 50,
-    "y": 50,
-    "date": "Add date",
-    "caption": "Add caption for IMG_1361.jpeg."
   },
   {
     "id": "media-07",
@@ -71,8 +49,8 @@
     "shortLabel": "07",
     "type": "video",
     "src": "assets/media/IMG_1370.mp4",
-    "x": 50,
-    "y": 50,
+    "x": 30.77,
+    "y": 75.02,
     "date": "Add date",
     "caption": "Add caption for IMG_1370.mp4."
   },
@@ -82,21 +60,10 @@
     "shortLabel": "08",
     "type": "image",
     "src": "assets/media/IMG_2966.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 24.65,
+    "y": 79.43,
     "date": "Add date",
     "caption": "Add caption for IMG_2966.jpeg."
-  },
-  {
-    "id": "media-09",
-    "title": "IMG 2969",
-    "shortLabel": "09",
-    "type": "image",
-    "src": "assets/media/IMG_2969.jpeg",
-    "x": 50,
-    "y": 50,
-    "date": "Add date",
-    "caption": "Add caption for IMG_2969.jpeg."
   },
   {
     "id": "media-10",
@@ -104,8 +71,8 @@
     "shortLabel": "10",
     "type": "image",
     "src": "assets/media/IMG_2972.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 81.91,
+    "y": 29.54,
     "date": "Add date",
     "caption": "Add caption for IMG_2972.jpeg."
   },
@@ -115,8 +82,8 @@
     "shortLabel": "11",
     "type": "video",
     "src": "assets/media/IMG_2983.mp4",
-    "x": 50,
-    "y": 50,
+    "x": 79.81,
+    "y": 30.27,
     "date": "Add date",
     "caption": "Add caption for IMG_2983.mp4."
   },
@@ -126,8 +93,8 @@
     "shortLabel": "12",
     "type": "image",
     "src": "assets/media/IMG_2984.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 71.59,
+    "y": 36.89,
     "date": "Add date",
     "caption": "Add caption for IMG_2984.jpeg."
   },
@@ -137,8 +104,8 @@
     "shortLabel": "13",
     "type": "video",
     "src": "assets/media/IMG_2986.mp4",
-    "x": 50,
-    "y": 50,
+    "x": 57.17,
+    "y": 60.43,
     "date": "Add date",
     "caption": "Add caption for IMG_2986.mp4."
   },
@@ -148,8 +115,8 @@
     "shortLabel": "14",
     "type": "video",
     "src": "assets/media/IMG_2987.mp4",
-    "x": 50,
-    "y": 50,
+    "x": 43.88,
+    "y": 68.28,
     "date": "Add date",
     "caption": "Add caption for IMG_2987.mp4."
   },
@@ -159,20 +126,9 @@
     "shortLabel": "15",
     "type": "image",
     "src": "assets/media/IMG_2990.jpeg",
-    "x": 50,
-    "y": 50,
+    "x": 14.77,
+    "y": 63.5,
     "date": "Add date",
     "caption": "Add caption for IMG_2990.jpeg."
-  },
-  {
-    "id": "media-16",
-    "title": "IMG 3002",
-    "shortLabel": "16",
-    "type": "image",
-    "src": "assets/media/IMG_3002.jpeg",
-    "x": 50,
-    "y": 50,
-    "date": "Add date",
-    "caption": "Add caption for IMG_3002.jpeg."
   }
 ]
