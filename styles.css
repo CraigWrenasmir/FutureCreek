@@ -212,7 +212,7 @@ h1 {
 .pin-meta {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
+  justify-content: center;
   gap: 0.2rem;
   margin-top: 4px;
 }
@@ -221,14 +221,7 @@ h1 {
   font-family: "Special Elite", serif;
   font-size: 0.65rem;
   color: #201c17;
-  text-align: left;
-}
-
-.pin-type {
-  font-size: 0.56rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(30, 24, 20, 0.66);
+  text-align: center;
 }
 
 .pin-play-badge {

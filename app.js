@@ -10,7 +10,6 @@ const viewerNextButton = document.getElementById("viewerNext");
 const pointButtonTemplate = document.getElementById("pointButtonTemplate");
 const listItemTemplate = document.getElementById("listItemTemplate");
 const closeViewerButton = document.getElementById("closeViewer");
-const toggleTrailButton = document.getElementById("toggleTrail");
 const togglePlaceModeButton = document.getElementById("togglePlaceMode");
 const trail = document.getElementById("trail");
 const trailPath = document.getElementById("trailPath");
@@ -197,7 +196,6 @@ function renderPoints() {
     button.style.top = `${point.y}%`;
     button.style.setProperty("--tilt", `${deterministicTilt(point.id)}deg`);
     button.querySelector(".point-label").textContent = point.shortLabel;
-    button.querySelector(".pin-type").textContent = point.type === "video" ? "Video" : "Photo";
 
     const mediaHost = button.querySelector(".pin-media");
     if (point.type === "video") {
@@ -346,18 +344,6 @@ viewerPrevButton.addEventListener("click", () => {
 
 viewerNextButton.addEventListener("click", () => {
   openViewerByIndex(activeIndex + 1);
-});
-
-toggleTrailButton.addEventListener("click", () => {
-  const isHidden = trail.hasAttribute("hidden");
-  if (isHidden) {
-    trail.removeAttribute("hidden");
-  } else {
-    trail.setAttribute("hidden", "hidden");
-  }
-  const nowHidden = !isHidden;
-  toggleTrailButton.setAttribute("aria-pressed", String(!nowHidden));
-  toggleTrailButton.textContent = nowHidden ? "Show Trail" : "Hide Trail";
 });
 
 togglePlaceModeButton.addEventListener("click", () => {
