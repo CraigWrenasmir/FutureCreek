@@ -269,18 +269,26 @@ clearTrailPointsButton.addEventListener("click", () => {
 
 copyTrailDataButton.addEventListener("click", copyTrailData);
 
-mapFrame.addEventListener(
-  "click",
-  (event) => {
-    if (!isCalibratingTrail) {
-      return;
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    addTrailPointFromEvent(event);
-  },
-  true
-);
+mapFrame.addEventListener("click", (event) => {
+  if (!isCalibratingTrail) {
+    return;
+  }
+
+  // Only map-surface clicks should add points.
+  const clickedOnMapSurface =
+    event.target === baseMap ||
+    event.target === trail ||
+    event.target === trailPath ||
+    trailGuide.contains(event.target);
+
+  if (!clickedOnMapSurface) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+  addTrailPointFromEvent(event);
+});
 
 viewer.addEventListener("click", (event) => {
   const rect = viewer.getBoundingClientRect();
